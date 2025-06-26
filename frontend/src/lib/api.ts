@@ -8,7 +8,7 @@ import {
   RegisterResponse,
   User,
 } from "@/types/Auth";
-import { Service } from "@/types/Service";
+import { Service, CreateServicePayload } from "@/types/Service";
 import {
   Agent,
   CreateAgentPayload,
@@ -66,9 +66,9 @@ export const fetchServices = async (): Promise<Service[]> => {
 };
 
 export const createService = async (
-    serviceData: Service
+    serviceData: CreateServicePayload
 ): Promise<Service> => {
-  return await nestAPI.post<Service, Service>("/services", serviceData);
+  return await nestAPI.post<CreateServicePayload, Service>("/services", serviceData);
 };
 
 export const updateServiceStatus = async (
