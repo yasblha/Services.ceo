@@ -46,6 +46,8 @@ export function CreateServiceModal({
       name: "",
       description: "",
       category: "",
+      organizationId: "",
+      price: 0,
       agent: "",
       model: "",
       inputs: [{ name: "", type: "text", description: "", required: true }],
@@ -92,7 +94,7 @@ export function CreateServiceModal({
   const getFieldsForStep = (step: number): (keyof CreateServiceData)[] => {
     switch (step) {
       case 0:
-        return ["name", "description", "category"];
+        return ["name", "description", "category", "organizationId", "price"];
       case 1:
         return ["agent", "model"];
       case 2:

@@ -31,6 +31,7 @@ export function ServiceBasicInfoForm() {
     watch,
   } = useFormContext<CreateServiceData>();
   const category = watch("category");
+  const price = watch("price");
 
   return (
     <div className="space-y-4">
@@ -80,6 +81,34 @@ export function ServiceBasicInfoForm() {
         </Select>
         {errors.category && (
           <p className="text-sm text-red-600 mt-1">{errors.category.message}</p>
+        )}
+      </div>
+
+      <div>
+        <Label htmlFor="organizationId">ID de l'organisation</Label>
+        <Input
+          id="organizationId"
+          {...register("organizationId")}
+          placeholder="UUID de l'organisation"
+        />
+        {errors.organizationId && (
+          <p className="text-sm text-red-600 mt-1">
+            {errors.organizationId.message}
+          </p>
+        )}
+      </div>
+
+      <div>
+        <Label htmlFor="price">Prix</Label>
+        <Input
+          id="price"
+          type="number"
+          step="0.01"
+          {...register("price", { valueAsNumber: true })}
+          placeholder="Prix du service"
+        />
+        {errors.price && (
+          <p className="text-sm text-red-600 mt-1">{errors.price.message}</p>
         )}
       </div>
     </div>

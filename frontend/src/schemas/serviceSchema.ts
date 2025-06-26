@@ -10,6 +10,12 @@ export const serviceBasicInfoSchema = z.object({
     .min(1, "La description est requise")
     .max(500, "La description ne peut pas dépasser 500 caractères"),
   category: z.string().min(1, "La catégorie est requise"),
+  organizationId: z
+    .string()
+    .min(1, "L'organisation est requise"),
+  price: z
+    .number({ invalid_type_error: "Le prix doit être un nombre" })
+    .positive("Le prix doit être positif"),
 });
 
 export const serviceAgentSchema = z.object({

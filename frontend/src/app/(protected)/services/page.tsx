@@ -6,63 +6,13 @@ import { StatsCard } from "@/components/service/StatsCard";
 import { Button } from "@/components/ui/button";
 import { createService, fetchServices, updateServiceStatus } from "@/lib/api";
 import { CreateServiceData } from "@/schemas/serviceSchema";
-import { Service } from "@/types/Service";
+import { Service, CreateServicePayload } from "@/types/Service";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle, Plus, Settings, Users } from "lucide-react";
-import { useState } from "react";
-const mockServices: Service[] = [
-  {
-    id: "1",
-    name: "Générateur de Résumés",
-    description: "Service de résumé automatique de documents",
-    category: "Traitement de texte",
-    status: "active",
-    agent: "Assistant Client",
-    model: "gpt-4",
-    lastUsed: "Il y a 30 minutes",
-    usageCount: 156,
-    isPublic: true,
-  },
-  {
-    id: "2",
-    name: "Analyseur de Sentiment",
-    description: "Analyse des sentiments dans les commentaires clients",
-    category: "Analyse",
-    status: "active",
-    agent: "Générateur de Contenu",
-    model: "gpt-3.5-turbo",
-    lastUsed: "Il y a 2 heures",
-    usageCount: 89,
-    isPublic: false,
-  },
-  {
-    id: "3",
-    name: "Correcteur Orthographique",
-    description: "Correction automatique de textes",
-    category: "Traitement de texte",
-    status: "testing",
-    agent: "Analyseur de Code",
-    model: "claude-3",
-    lastUsed: "Il y a 1 jour",
-    usageCount: 23,
-    isPublic: false,
-  },
-  {
-    id: "4",
-    name: "Traducteur Multilingue",
-    description: "Service de traduction automatique",
-    category: "Traduction",
-    status: "inactive",
-    agent: "Assistant Client",
-    model: "gpt-4",
-    lastUsed: "Il y a 3 jours",
-    usageCount: 67,
-    isPublic: true,
-  },
-];
+import { useState, useEffect } from "react";
 
 export default function ServicesPage() {
-  const [services, setServices] = useState<Service[]>(mockServices);
+  const [services, setServices] = useState<Service[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const queryClient = useQueryClient();
 
@@ -70,6 +20,24 @@ export default function ServicesPage() {
     queryKey: ["services"],
     queryFn: fetchServices,
   });
+
+  useEffect(() => {
+    if (ServicesFromDb) {
+      const mapped = ServicesFromDb.map((s) => ({
+        id: s.id,
+        name: s.name,
+        description: s.description || "",
+        category: s.category || "",
+        status: s.isActive ? "active" : "inactive",
+        agent: "",
+        model: "",
+        lastUsed: "",
+        usageCount: 0,
+        isPublic: false,
+      }));
+      setServices(mapped);
+    }
+  }, [ServicesFromDb]);
 
   const { mutate: newService } = useMutation({
     mutationFn: createService,
@@ -95,7 +63,14 @@ export default function ServicesPage() {
   const publicServices = services.filter((s) => s.isPublic).length;
 
   const handleCreateService = (serviceData: CreateServiceData) => {
-    newService(serviceData);
+    const payload: CreateServicePayload = {
+      title: serviceData.name,
+      description: serviceData.description,
+      category: serviceData.category,
+      organizationId: serviceData.organizationId,
+      price: serviceData.price,
+    };
+    newService(payload);
   };
 
   const handleStatusChange = (serviceId: string, status: Service["status"]) => {
