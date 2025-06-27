@@ -35,9 +35,13 @@ export class ConfigurationService {
 
         const config = await this.prisma.serviceConfig.create({
             data: {
-                service: { connect: { id: serviceId } },
                 ...defaultConfig
             }
+        });
+
+        await this.prisma.service.update({
+            where: { id: serviceId },
+            data: { config: { connect: { id: config.id } } }
         });
 
         return this.mapToServiceConfiguration(config);
