@@ -8,7 +8,7 @@ export class CreateServiceDto {
     })
     @IsString()
     @IsNotEmpty()
-    title: string;
+    name: string;
 
     @ApiPropertyOptional({
         description: 'Description du service'
@@ -33,14 +33,13 @@ export class CreateServiceDto {
     @IsNotEmpty()
     organizationId: string;
 
-    @ApiPropertyOptional({
-        description: 'ID de l\'auteur (user système par défaut)',
-        example: '1',
-        default: '1'
+    @ApiProperty({
+        description: 'ID de l\'auteur',
+        example: '123e4567-e89b-12d3-a456-426614174001'
     })
     @IsString()
-    @IsOptional()
-    authorId?: string;
+    @IsNotEmpty()
+    authorId: string;
 
     @ApiProperty({
         description: 'Prix du service',

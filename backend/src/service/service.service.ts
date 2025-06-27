@@ -13,7 +13,7 @@ export class ServiceService {
     ) {}
 
     async create(createServiceDto: CreateServiceDto) {
-        const { title, description, category, organizationId, authorId, price } = createServiceDto;
+        const { name, description, category, organizationId, authorId, price } = createServiceDto;
 
         const serviceConfig = await this.prisma.serviceConfig.create({
             data: {
@@ -32,12 +32,13 @@ export class ServiceService {
 
         return this.prisma.service.create({
             data: {
-                name: title,
+                name,
                 slug: `service-${Date.now()}`,
                 description,
                 category: category || 'default',
                 config: { connect: { id: serviceConfig.id } },
-                createdBy: { connect: { id: authorId } }
+                createdBy: { connect: { id: authorId } },
+                organizationId
             },
             include: {
                 config: true,

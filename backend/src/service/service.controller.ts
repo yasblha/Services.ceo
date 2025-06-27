@@ -39,7 +39,7 @@ export class ServiceController {
       basic: {
         summary: 'Création basique',
         value: {
-          title: 'Service de traduction',
+          name: 'Service de traduction',
           description: 'Traduction professionnelle',
           organizationId: '123e4567-e89b-12d3-a456-426614174000',
           authorId: '123e4567-e89b-12d3-a456-426614174001',
@@ -49,7 +49,7 @@ export class ServiceController {
       full: {
         summary: 'Création complète',
         value: {
-          title: 'Service de traduction premium',
+          name: 'Service de traduction premium',
           description: 'Traduction professionnelle avec relecture',
           category: 'traduction',
           organizationId: '123e4567-e89b-12d3-a456-426614174000',
@@ -94,7 +94,7 @@ export class ServiceController {
       example: {
         statusCode: 400,
         message: [
-          'title should not be empty',
+          'name should not be empty',
           'price must be a number'
         ],
         error: 'Bad Request'
